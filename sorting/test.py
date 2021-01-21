@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import os
 import random
 import subprocess
@@ -7,6 +6,7 @@ import unittest
 import configparser
 
 # TODO: Print folder name
+# TODO: Accept newline at end of output?
 
 configFile = 'config'
 

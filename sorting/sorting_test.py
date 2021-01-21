@@ -3,13 +3,12 @@
 import os
 import random
 import subprocess
+import unittest
+import configparser
 
 # TODO: Print folder name
 
-configFile = 'config.py'
-
-fileName=''
-runCommand=''
+configFile = 'config'
 
 testCase = random.sample(range(0, 10), 10)
 testExpected = testCase.copy()
@@ -21,15 +20,20 @@ testExpected = ' '.join(map(str, testExpected))
 def buildPath(root, fileName):
     return root + '/' + fileName
 
-for root, dirs, files in os.walk(".", topdown=True):
-    if configFile in files:
-        exec(open(buildPath(root, configFile)).read())
-    if fileName in files:
-        command = [runCommand, buildPath(root, fileName)]
-        command.extend(testCase)
-        result = subprocess.run(command, stdout=subprocess.PIPE)
-        testActual = result.stdout.decode('utf-8')
-        print('Tested: ' + testCaseString)
-        print('Expected: ' + testExpected)
-        print('Actual: ' + testActual)
-        assert testExpected == testActual
+class SortingTest(unittest.TestCase):
+    def test_sort(self):
+        config = configparser.ConfigParser()
+        config['Commands'] = {'fileName': '', 'runCommand': ''}
+        configVars = config['Commands']
+        for root, dirs, files in os.walk(".", topdown=True):
+            if configFile in files:
+                config.read(buildPath(root, configFile))
+            if configVars['fileName'] in files:
+                command = [configVars['runCommand'], buildPath(root, configVars['fileName'])]
+                command.extend(testCase)
+                result = subprocess.run(command, stdout=subprocess.PIPE)
+                testActual = result.stdout.decode('utf-8')
+                self.assertEqual(testExpected, testActual)
+
+if __name__ == '__main__':
+    unittest.main()

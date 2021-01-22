@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import random
 import subprocess
 import unittest
 import configparser
@@ -12,8 +11,8 @@ configFile = 'config'
 def buildPath(root, fileName):
     return root + '/' + fileName
 
-class SortingTest(unittest.TestCase):
-    def test_sort(self):
+class FibonacciTest(unittest.TestCase):
+    def test_fib(self):
         config = configparser.ConfigParser()
         config['Commands'] = {'fileName': '', 'runCommand': ''}
         configVars = config['Commands']

@@ -12,4 +12,4 @@ def insertionSort(arr):
 arr = sys.argv[1:]
 arr = list(map(int, arr))
 insertionSort(arr)
-print(' '.join(map(str, arr)), end='')
+print(' '.join(map(str, arr)))

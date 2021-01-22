@@ -25,6 +25,6 @@ class BaseTest(unittest.TestCase):
                     result = subprocess.run(command, stdout=subprocess.PIPE)
                     print(result.args) # for debugging
                     testActual = result.stdout.decode('utf-8')
-                    self.assertEqual(expected, testActual)
+                    self.assertEqual(expected, testActual.rstrip('\n'))
     
     def configure_command(self, test_case, command): pass

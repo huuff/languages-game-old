@@ -10,4 +10,4 @@ def bubbleSort(arr):
 arr = sys.argv[1:]
 arr = list(map(int, arr))
 bubbleSort(arr)
-print(' '.join(map(str, arr)), end='')
+print(' '.join(map(str, arr)))

@@ -19,10 +19,12 @@ class BaseTest(unittest.TestCase):
             if configFile in files:
                 config.read(self.buildPath(root, configFile))
             if configVars['fileName'] in files:
-                command = [configVars['runCommand'], self.buildPath(root, configVars['fileName'])]
-                expected = self.configure_command_and_get_expected(command)
-                result = subprocess.run(command, stdout=subprocess.PIPE)
-                testActual = result.stdout.decode('utf-8')
-                self.assertEqual(expected, testActual)
+                for test_case, expected in self.test_cases.items():
+                    command = [configVars['runCommand'], self.buildPath(root, configVars['fileName'])]
+                    self.configure_command(test_case, command)
+                    result = subprocess.run(command, stdout=subprocess.PIPE)
+                    print(result.args) # for debugging
+                    testActual = result.stdout.decode('utf-8')
+                    self.assertEqual(expected, testActual)
     
-    def configure_command_and_get_expected(self, command): pass
+    def configure_command(self, test_case, command): pass

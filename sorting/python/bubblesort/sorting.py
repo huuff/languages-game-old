@@ -8,5 +8,6 @@ def bubbleSort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j] 
 
 arr = sys.argv[1:]
+arr = list(map(int, arr))
 bubbleSort(arr)
-print(' '.join(arr), end='')
+print(' '.join(map(str, arr)), end='')

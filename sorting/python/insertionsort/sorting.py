@@ -10,5 +10,6 @@ def insertionSort(arr):
         arr[j+1] = key
 
 arr = sys.argv[1:]
+arr = list(map(int, arr))
 insertionSort(arr)
-print(' '.join(arr), end='')
+print(' '.join(map(str, arr)), end='')

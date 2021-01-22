@@ -8,17 +8,22 @@ import testbase
 
 # TODO: Accept newline at end of output?
 
-testCase = random.sample(range(0, 10), 10)
-testExpected = testCase.copy()
-testExpected.sort()
-testCase = list(map(str, testCase))
-testCaseString = ' '.join(testCase)
-testExpected = ' '.join(map(str, testExpected))
+randomCase = random.sample(range(-100, 100), 100)
+randomCaseExpected = randomCase.copy()
+randomCaseExpected.sort()
+
+def list_to_string(list):
+    return ' '.join(map(str, list))
 
 class SortingTest(testbase.BaseTest):
-    def configure_command_and_get_expected(self, command):
-        command.extend(testCase)
-        return testExpected
+    test_cases = {
+            list_to_string(range(10, 0, -1)): list_to_string(range(1, 11, 1)),
+            list_to_string(randomCase): list_to_string(randomCaseExpected),
+            }
+
+    def configure_command(self, test_case, command):
+        command.extend(test_case.split(' '))
+
 
 
 if __name__ == '__main__':

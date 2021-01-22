@@ -3,28 +3,15 @@ import os
 import subprocess
 import unittest
 import configparser
-
+import sys
+sys.path.append('../lib')
+import testbase
 # TODO: Print folder name
 
-configFile = 'config'
-
-def buildPath(root, fileName):
-    return root + '/' + fileName
-
-class FibonacciTest(unittest.TestCase):
-    def test_fib(self):
-        config = configparser.ConfigParser()
-        config['Commands'] = {'fileName': '', 'runCommand': ''}
-        configVars = config['Commands']
-        for root, dirs, files in os.walk(".", topdown=True):
-            if configFile in files:
-                config.read(buildPath(root, configFile))
-            if configVars['fileName'] in files:
-                command = [configVars['runCommand'], buildPath(root, configVars['fileName'])]
-                command.append('25')
-                result = subprocess.run(command, stdout=subprocess.PIPE)
-                testActual = result.stdout.decode('utf-8')
-                self.assertEqual('75025\n', testActual)
+class FibonacciTest(testbase.BaseTest):
+    def configure_command_and_get_expected(self, command):
+        command.append('25')
+        return '75025\n'
 
 if __name__ == '__main__':
     unittest.main()

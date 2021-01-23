@@ -1,21 +1,21 @@
 import sys
 
-def insertion_sort(arr, n): 
+def insertion_sort(array, n): 
     if n == 1:
-        return arr[0]
+        return [array[0]]
     
-    sorted_previous = insertion_sort(arr, n-1)
-    key = arr[n-1]
-    j = n-2
+    sorted_previous = insertion_sort(array, n-1)
+    key = array[n-1]
+    j = len(sorted_previous)
 
-    while j >= 0 and arr[j] > key:
+    while j >= 1 and sorted_previous[j-1] > key:
         j -= 1
-    return arr[0:j] + [key] + arr[j+1:]
+    return sorted_previous[0:j] + [key] + sorted_previous[j:]
 
     
 
 
-arr = sys.argv[1:]
-arr = list(map(int, arr))
-insertion_sort(arr, len(arr))
-print(' '.join(map(str, arr)))
+array = sys.argv[1:]
+array = list(map(int, array))
+sorted_array = insertion_sort(array, len(array))
+print(' '.join(map(str, sorted_array)))

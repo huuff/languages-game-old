@@ -23,7 +23,7 @@ class BaseTest(unittest.TestCase):
                     command = [configVars['runCommand'], self.buildPath(root, configVars['fileName'])]
                     self.configure_command(test_case, command)
                     result = subprocess.run(command, stdout=subprocess.PIPE)
-                    print(result.args) # for debugging
+                    #print(result.args) # for debugging
                     testActual = result.stdout.decode('utf-8')
                     self.assertEqual(expected, testActual.rstrip('\n'))
     

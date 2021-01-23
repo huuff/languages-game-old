@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import random
 import subprocess
 import unittest
@@ -8,7 +8,7 @@ import testbase
 
 # TODO: Accept newline at end of output?
 
-randomCase = random.sample(range(-100, 100), 100)
+randomCase = random.sample(range(-10, 10), 20)
 randomCaseExpected = randomCase.copy()
 randomCaseExpected.sort()
 

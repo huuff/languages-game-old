@@ -6,8 +6,6 @@ import sys
 sys.path.append('../lib')
 import testbase
 
-# TODO: Accept newline at end of output?
-
 randomCase = random.sample(range(-10, 10), 20)
 randomCaseExpected = randomCase.copy()
 randomCaseExpected.sort()

@@ -1,0 +1,3 @@
+[Commands]
+fileName = server.py
+runCommand = python

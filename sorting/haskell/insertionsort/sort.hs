@@ -7,4 +7,4 @@ insertionSort = foldr insert []
 
 main = do args <- getArgs
           let output = insertionSort $ map (read :: String->Int) args
-          print $ intercalate " " (map (show :: Int->String) output)
+          putStrLn $ intercalate " " (map (show :: Int->String) output)

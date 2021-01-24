@@ -19,7 +19,9 @@ class Command:
 class OneShotCommand(Command):
     def run(self):
         output = subprocess.run(self.command, stdout=subprocess.PIPE)
-        return output.stdout.decode('utf-8')
+        process = subprocess.Popen(self.command, stdout=subprocess.PIPE, universal_newlines=True)
+        process.wait()
+        return process.communicate()[0]
 
 class LongRunningCommand(Command):
     def __init__(self, base_command, func):

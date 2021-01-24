@@ -2,7 +2,7 @@ import os
 import subprocess
 import concurrent.futures
 import time
-import pdb
+import timeit
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
@@ -23,7 +23,10 @@ class OneShotCommand(Command):
     def run(self, timeout):
         process = subprocess.Popen(self.command, stdout=subprocess.PIPE, universal_newlines=True)
         try:
+            start = timeit.default_timer()
             process.wait(timeout)
+            end = timeit.default_timer()
+            print("Took: ", round(end - start, 5))
         except subprocess.TimeoutExpired as err:
             process.kill()
             print(process.communicate()[0])

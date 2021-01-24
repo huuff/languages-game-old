@@ -5,7 +5,6 @@ import configparser
 import sys
 sys.path.append('.')
 import command
-# TODO: Print folder name
 
 configFile = 'config'
 

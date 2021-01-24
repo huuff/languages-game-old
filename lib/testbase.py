@@ -6,11 +6,11 @@ import sys
 sys.path.append('.')
 import command
 
-configFile = 'config'
+config_file = 'config'
 
 class BaseTest(unittest.TestCase):
-    def build_path(self, root, fileName):
-        return root + '/' + fileName
+    def build_path(self, root, file):
+        return root + '/' + file
 
     def sanitize_output(self, output):
         if isinstance(output, str):
@@ -19,26 +19,25 @@ class BaseTest(unittest.TestCase):
             return output
 
     def test_template(self):
-        config = configparser.ConfigParser()
-        config['Commands'] = {
-                'fileName': '', 
-                'runCommand': '',
+        config = configparser.ConfigParser(defaults = {
+                'file': '', 
+                'run': '',
                 'timeout': 10_000,
-                }
-        configVars = config['Commands']
+                })
+        config.add_section('Commands')
         for root, dirs, files in os.walk(".", topdown=True):
             print(root)
-            if configFile in files:
-                config.read(self.build_path(root, configFile))
-            if configVars['fileName'] in files:
+            if config_file in files:
+                config.read(self.build_path(root, config_file))
+            if config.get('Commands', 'file') in files:
                 for test_case, expected in self.test_cases.items():
-                    self.run_test(root, configVars, test_case, expected)
+                    self.run_test(root, config, test_case, expected)
 
-    def run_test(self, root, configVars, test_case, expected):
-        command = [configVars['runCommand'], self.build_path(root, configVars['fileName'])]
+    def run_test(self, root, config, test_case, expected):
+        command = [config.get('Commands', 'run'), self.build_path(root, config.get('Commands','file'))]
         command = self.configure_command(test_case, command)
         try:
-            actual = command.run(int(configVars['timeout']) / 1000)
+            actual = command.run(int(config.get('Commands','timeout')) / 1000)
             self.assertEqual(expected, self.sanitize_output(actual))
         except subprocess.TimeoutExpired:
             print('Timed out!')

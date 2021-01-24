@@ -1,41 +1,29 @@
 #!/usr/bin/env python
-import os
-import subprocess
 import unittest
-import configparser
 import http.client
-import time
+import sys
+sys.path.append('../lib')
+import testbase
+import command
 
-configFile = 'config'
-
-class HTTPServerTest(unittest.TestCase):
-    def buildPath(self, root, fileName):
-        return root + '/' + fileName
-
-    def test_template(self):
-        config = configparser.ConfigParser()
-        config['Commands'] = {'fileName': '', 'runCommand': ''}
-        configVars = config['Commands']
-        for root, dirs, files in os.walk(".", topdown=True):
-            if configFile in files:
-                config.read(self.buildPath(root, configFile))
-            if configVars['fileName'] in files:
-                command = [configVars['runCommand'], self.buildPath(root, configVars['fileName'])]
-
-                server = subprocess.Popen(command)
-                time.sleep(1)
-                client = http.client.HTTPConnection('localhost', 8000)
-                client.request('GET', '')
-                response = client.getresponse()
-
-                server.terminate()
-                server.wait()
-
-                self.assertEqual(200, response.status)
+def make_get_request():
+    client = http.client.HTTPConnection('localhost', 8000) #TODO: Parameterize port
+    client.request('GET', '')
+    response = client.getresponse()
+    return response.status
 
 
-    
-    def configure_command(self, test_case, command): pass
+class HTTPServerTest(testbase.BaseTest):
+    test_cases = {
+            '1': 200
+            }
+
+    # TODO: Improve test classes in their own class so they admit
+    # arbitrary code blocks besides input and output pairs
+    def configure_command(self, test_case, base_command):
+        return command.LongRunningCommand(base_command, make_get_request)
+
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,7 @@ import unittest
 import sys
 sys.path.append('../lib')
 import testbase
+import command
 
 randomCase = random.sample(range(-10, 10), 20)
 randomCaseExpected = randomCase.copy()
@@ -19,8 +20,8 @@ class SortingTest(testbase.BaseTest):
             list_to_string(randomCase): list_to_string(randomCaseExpected),
             }
 
-    def configure_command(self, test_case, command):
-        command.extend(test_case.split(' '))
+    def configure_command(self, test_case, baseCommand):
+        return command.OneShotCommand(baseCommand).add_args(test_case)
 
 
 

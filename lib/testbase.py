@@ -21,7 +21,11 @@ class BaseTest(unittest.TestCase):
 
     def test_template(self):
         config = configparser.ConfigParser()
-        config['Commands'] = {'fileName': '', 'runCommand': ''}
+        config['Commands'] = {
+                'fileName': '', 
+                'runCommand': '',
+                'timeout': 10_000,
+                }
         configVars = config['Commands']
         for root, dirs, files in os.walk(".", topdown=True):
             if configFile in files:
@@ -30,7 +34,10 @@ class BaseTest(unittest.TestCase):
                 for test_case, expected in self.test_cases.items():
                     command = [configVars['runCommand'], self.build_path(root, configVars['fileName'])]
                     command = self.configure_command(test_case, command)
-                    actual = command.run()
-                    self.assertEqual(expected, self.sanitize_output(actual))
+                    try:
+                        actual = command.run(int(configVars['timeout']) / 1000)
+                        self.assertEqual(expected, self.sanitize_output(actual))
+                    except subprocess.TimeoutExpired:
+                        print('Timed out!')
     
     def configure_command(self, test_case, command): pass

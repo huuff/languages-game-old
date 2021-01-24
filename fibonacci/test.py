@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 import unittest
 import sys
+import tracemalloc
 sys.path.append('../lib')
 import testbase
 import command
+
+tracemalloc.start()
 
 class FibonacciTest(testbase.BaseTest):
     test_cases = {

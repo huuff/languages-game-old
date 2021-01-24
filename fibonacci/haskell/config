@@ -1,3 +1,4 @@
 [Commands]
 fileName = fib.hs
 runCommand = runhaskell
+timout = 1000

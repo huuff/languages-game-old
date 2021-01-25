@@ -2,9 +2,7 @@
 import unittest
 import sys
 import tracemalloc
-sys.path.append('../lib')
-import testbase
-import command
+from ...lib import testbase, command
 
 tracemalloc.start()
 
@@ -20,5 +18,3 @@ class FibonacciTest(testbase.BaseTest):
     def configure_command(self, test_case, base_command):
         return command.OneShotCommand(base_command).add_arg(test_case)
 
-if __name__ == '__main__':
-    unittest.main()

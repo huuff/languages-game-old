@@ -3,9 +3,8 @@ import random
 import subprocess
 import unittest
 import sys
-sys.path.append('../lib')
-import testbase
-import command
+from ...lib import testbase
+from ...lib import command
 
 randomCase = random.sample(range(-10, 10), 20)
 randomCaseExpected = randomCase.copy()
@@ -23,7 +22,3 @@ class SortingTest(testbase.BaseTest):
     def configure_command(self, test_case, baseCommand):
         return command.OneShotCommand(baseCommand).add_args(test_case)
 
-
-
-if __name__ == '__main__':
-    unittest.main()

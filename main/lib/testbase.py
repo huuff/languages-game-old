@@ -3,11 +3,15 @@ import subprocess
 import unittest
 import configparser
 import sys
-import command
+from . import command
 
 config_file = 'config'
 
-class BaseTest(unittest.TestCase):
+class BaseTest():
+    test_class = unittest.TestCase()
+    def __init__(self, root_dir):
+        self.root_dir = root_dir
+
     def build_path(self, root, file):
         return root + '/' + file
 
@@ -24,7 +28,7 @@ class BaseTest(unittest.TestCase):
                 'timeout': 10_000,
                 })
         config.add_section('Commands')
-        for root, dirs, files in os.walk(".", topdown=True):
+        for root, dirs, files in os.walk(self.root_dir, topdown=True):
             print(root)
             if config_file in files:
                 config.read(self.build_path(root, config_file))
@@ -37,7 +41,7 @@ class BaseTest(unittest.TestCase):
         command = self.configure_command(test_case, command)
         try:
             actual = command.run(int(config.get('Commands','timeout')) / 1000)
-            self.assertEqual(expected, self.sanitize_output(actual))
+            self.test_class.assertEqual(expected, self.sanitize_output(actual))
         except subprocess.TimeoutExpired:
             print('Timed out!')
 

@@ -2,9 +2,8 @@
 import unittest
 import http.client
 import sys
-sys.path.append('../lib')
-import testbase
-import command
+from ...lib import testbase
+from ...lib import command
 
 def make_get_request():
     client = http.client.HTTPConnection('localhost', 8000) #TODO: Parameterize port
@@ -23,7 +22,3 @@ class HTTPServerTest(testbase.BaseTest):
     def configure_command(self, test_case, base_command):
         return command.LongRunningCommand(base_command, make_get_request)
 
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import unittest
 import sys
-import tracemalloc
+import os
 from ...lib import testbase, command
-
-tracemalloc.start()
 
 class FibonacciTest(testbase.BaseTest):
     test_cases = {
@@ -15,6 +13,10 @@ class FibonacciTest(testbase.BaseTest):
             '30': '832040',
             #'35': '9227465', #too slow for naive-recursive
             }
+
+    def __init__(self):
+        super().__init__(os.path.dirname(__file__))
+
     def configure_command(self, test_case, base_command):
         return command.OneShotCommand(base_command).add_arg(test_case)
 

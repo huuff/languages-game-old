@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 import sys
 
-task = sys.argv[1]
+task_name = sys.argv[1]
 
-if task == 'fibonacci' or task == 'fib':
-    import main.tasks.fibonacci.test
-    main.tasks.fibonacci.test.FibonacciTest('main/tasks/fibonacci/').test_template()
-elif task == 'sorting' or task == 'sort':
-    import main.tasks.sorting.test
-    main.tasks.sorting.test.SortingTest('main/tasks/sorting/').test_template()
-elif task == 'http-server' or task == 'server':
-    import main.tasks.http_server.test
-    main.tasks.http_server.test.HTTPServerTest('main/tasks/http_server/').test_template()
+if task_name == 'fibonacci' or task_name == 'fib':
+    import main.tasks.fibonacci.test as task
+    task.FibonacciTest().test_template()
+elif task_name == 'sorting' or task_name == 'sort':
+    import main.tasks.sorting.test as task
+    task.SortingTest().test_template()
+elif task_name == 'http-server' or task_name == 'server':
+    import main.tasks.http_server.test as task
+    task.HTTPServerTest().test_template()

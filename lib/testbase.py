@@ -3,7 +3,6 @@ import subprocess
 import unittest
 import configparser
 import sys
-sys.path.append('.')
 import command
 
 config_file = 'config'

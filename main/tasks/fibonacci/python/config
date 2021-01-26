@@ -1,3 +1,4 @@
 [Commands]
 file = fib.py
 run = python
+timeout = 5000

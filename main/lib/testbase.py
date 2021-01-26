@@ -30,11 +30,11 @@ class BaseTest():
         self.recursive_descent(self.root_dir, config)
 
     def recursive_descent(self, root, config):
-        files = glob.glob(f"{root}/*")
-        config_file = f"{root}/config"
-        test_file = f"{root}/{config.get('Commands', 'file')}"
+        files = glob.glob(os.path.join(root, '*'))
+        config_file = os.path.join(root, 'config')
+        test_file = os.path.join(root, config.get('Commands', 'file'))
         if config_file in files:
-            print(f"Reading {config_file}")
+            # print(f"Reading {config_file}")
             config = copy.copy(config)
             config.read(f"{config_file}")
         for file in files:

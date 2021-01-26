@@ -33,7 +33,7 @@ class BaseTest():
             if config_file in files:
                 config.read(self.build_path(root, config_file))
             if config.get('Commands', 'file') in files:
-                for test_case, expected in self.test_cases.items():
+                for test_case, expected in self.test_cases().items():
                     self.run_test(root, config, test_case, expected)
 
     def run_test(self, root, config, test_case, expected):
@@ -45,6 +45,8 @@ class BaseTest():
         except subprocess.TimeoutExpired:
             print('Timed out!')
 
-
+    def test_cases(self):
+        return {}
     
-    def configure_command(self, test_case, command): pass
+    def configure_command(self, test_case, command):
+        return command.Command()

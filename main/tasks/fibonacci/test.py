@@ -5,7 +5,8 @@ import os
 from ...lib import testbase, command
 
 class Test(testbase.BaseTest):
-    test_cases = {
+    def test_cases(self): 
+        return {
             '1': '1',
             '2': '1',
             '10': '55',

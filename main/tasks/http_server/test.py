@@ -12,9 +12,10 @@ def make_get_request():
 
 
 class Test(testbase.BaseTest):
-    test_cases = {
-            '1': 200
-            }
+    def test_cases(self):
+        return {
+                '1': 200
+                }
 
     def __init__(self):
         super().__init__(os.path.dirname(__file__))

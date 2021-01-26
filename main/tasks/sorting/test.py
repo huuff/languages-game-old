@@ -12,10 +12,11 @@ def list_to_string(list):
     return ' '.join(map(str, list))
 
 class Test(testbase.BaseTest):
-    test_cases = {
-            list_to_string(range(10, 0, -1)): list_to_string(range(1, 11, 1)),
-            list_to_string(randomCase): list_to_string(randomCaseExpected),
-            }
+    def test_cases(self):
+        return {
+                list_to_string(range(10, 0, -1)): list_to_string(range(1, 11, 1)),
+                list_to_string(randomCase): list_to_string(randomCaseExpected),
+                }
 
     def __init__(self):
         super().__init__(os.path.dirname(__file__))

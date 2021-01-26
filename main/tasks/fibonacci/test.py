@@ -4,7 +4,7 @@ import sys
 import os
 from ...lib import testbase, command
 
-class FibonacciTest(testbase.BaseTest):
+class Test(testbase.BaseTest):
     test_cases = {
             '1': '1',
             '2': '1',

@@ -11,7 +11,7 @@ def make_get_request():
     return response.status
 
 
-class HTTPServerTest(testbase.BaseTest):
+class Test(testbase.BaseTest):
     test_cases = {
             '1': 200
             }

@@ -1,4 +1,3 @@
 [Commands]
 file = fib.hs
 run = runhaskell ${file}
-timeout = 1200

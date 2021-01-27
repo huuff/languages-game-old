@@ -1,4 +1,3 @@
 [Commands]
 file = fib.py
 run = python ${file}
-timeout = 5000

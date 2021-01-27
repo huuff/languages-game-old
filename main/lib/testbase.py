@@ -36,15 +36,23 @@ class BaseTest():
         config_file = root.joinpath('config')
         test_file = root.joinpath(config.get('Commands', 'file'))
         if root.joinpath('config') in files:
-            config = copy.copy(config)
+            config = copy.deepcopy(config)
             config.read(config_file)
         for file in files:
             if file.is_dir():
                 print(f"{file.relative_to(self.root_path.parent)}")
                 self.recursive_descent(file, config)
             if file == test_file:
+                if config.has_option("Commands", "pre"):
+                    command.OneShotCommand(config.get("Commands", "pre").split(' ')) \
+                    .set_dir(root) \
+                    .run(config.getint('Commands', 'timeout') / 1000)
                 for test_case, expected in self.test_cases().items():
                     self.run_test(root, config, test_case, expected)
+                if config.has_option("Commands", "post"):
+                    command.OneShotCommand(config.get("Commands", "post").split(' ')) \
+                    .set_dir(root) \
+                    .run(config.getint('Commands', 'timeout') / 1000)
 
     def run_test(self, directory, config, test_case, expected):
         command = config.get('Commands', 'run').split(' ')

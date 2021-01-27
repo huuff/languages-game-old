@@ -26,9 +26,9 @@ class BaseTest():
                 'file': '', 
                 'run': '',
                 'timeout': 10_000,
-                })
+                },
+                interpolation=configparser.ExtendedInterpolation())
         config.add_section('Commands')
-        # self.recursive_descent(self.root_dir, config)
         self.recursive_descent(self.root_path, config)
 
     def recursive_descent(self, root, config):
@@ -44,11 +44,11 @@ class BaseTest():
                 self.recursive_descent(file, config)
             if file == test_file:
                 for test_case, expected in self.test_cases().items():
-                    self.run_test(test_file, config, test_case, expected)
+                    self.run_test(root, config, test_case, expected)
 
-    def run_test(self, test_file, config, test_case, expected):
-        command = [config.get('Commands', 'run'), test_file]
-        command = self.configure_command(test_case, command)
+    def run_test(self, directory, config, test_case, expected):
+        command = config.get('Commands', 'run').split(' ')
+        command = self.configure_command(test_case, command).set_dir(directory)
         try:
             actual = command.run(int(config.get('Commands','timeout')) / 1000)
             self.test_class.assertEqual(expected, self.sanitize_output(actual))

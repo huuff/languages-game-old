@@ -16,12 +16,20 @@ class Command:
     def add_args(self, args):
         self.command.extend(args.split(' '))
         return self
+
+    def set_dir(self, directory):
+        self.directory = directory
+        return self
     
     def run(self): pass
 
 class OneShotCommand(Command):
     def run(self, timeout):
-        process = subprocess.Popen(self.command, stdout=subprocess.PIPE, universal_newlines=True)
+        process = subprocess.Popen(
+                self.command, 
+                stdout=subprocess.PIPE, 
+                universal_newlines=True,
+                cwd=self.directory)
         try:
             start = timeit.default_timer()
             process.wait(timeout)
@@ -39,7 +47,7 @@ class LongRunningCommand(Command):
         self.func = func
 
     def run(self, timeout):
-        process = subprocess.Popen(self.command)
+        process = subprocess.Popen(self.command, cwd=self.directory)
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(self.func)

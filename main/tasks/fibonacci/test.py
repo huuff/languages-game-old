@@ -12,7 +12,7 @@ class Test(testbase.BaseTest):
             '10': '55',
             '25': '75025',
             '30': '832040',
-            '35': '9227465', #too slow for naive-recursive
+            '35': '9227465',
             }
 
     def __init__(self):

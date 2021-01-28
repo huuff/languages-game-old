@@ -1,9 +1,5 @@
-import os
 import subprocess
 import unittest
-import sys
-import glob
-import copy
 import pathlib
 from . import command
 from . import config

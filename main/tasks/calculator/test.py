@@ -11,7 +11,8 @@ class Test(testbase.BaseTest):
             '5 - 2': '3',
             '3 * 4': '12',
             '10 + (3 * 2)': '16',
-            '10 / 3' : '3.3333'
+            '10 / 3': '3',
+            '10.0 / 3.0' : '3.333'
             }
 
     def configure_command(self, test_case, base_command):

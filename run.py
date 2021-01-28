@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import os
 
 task_name = sys.argv[1]
 
@@ -10,4 +11,4 @@ elif task_name == 'sorting' or task_name == 'sort':
 elif task_name == 'http-server' or task_name == 'server':
     import main.tasks.http_server.test as task
 
-task.Test().test_template()
+task.Test(os.path.dirname(task.__file__)).test_template()

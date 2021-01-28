@@ -18,9 +18,6 @@ class Test(testbase.BaseTest):
                 list_to_string(randomCase): list_to_string(randomCaseExpected),
                 }
 
-    def __init__(self):
-        super().__init__(os.path.dirname(__file__))
-
     def configure_command(self, test_case, baseCommand):
         return command.OneShotCommand(baseCommand).add_args(test_case)
 

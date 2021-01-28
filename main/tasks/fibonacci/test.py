@@ -15,9 +15,6 @@ class Test(testbase.BaseTest):
             '35': '9227465',
             }
 
-    def __init__(self):
-        super().__init__(os.path.dirname(__file__))
-
     def configure_command(self, test_case, base_command):
         return command.OneShotCommand(base_command).add_arg(test_case)
 

@@ -4,6 +4,7 @@ import copy
 from .command import OneShotCommand
 
 # TODO: remove get from names
+# TODO: maybe automatically add default when reading
 
 def default():
     default = configparser.ConfigParser(defaults = {

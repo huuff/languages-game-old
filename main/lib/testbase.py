@@ -1,11 +1,9 @@
 import subprocess
-import unittest
 import pathlib
 from . import command
 from . import config
 
 class BaseTest():
-    test_class = unittest.TestCase()
     def __init__(self, root_dir):
         self.root_path = pathlib.Path(root_dir)
 
@@ -35,16 +33,17 @@ class BaseTest():
 
     def run_test(self, directory, config, test_case, expected):
         command = self.configure_command(test_case, config.get_run()).set_dir(directory)
+        actual = 'placeholder' # just so the linter doesn't complain
         try:
             actual = command.run(config.get_timeout())
-            self.test_class.assertEqual(expected, self.sanitize_output(actual))
+            assert expected == self.sanitize_output(actual)
         except subprocess.TimeoutExpired:
             print('Timed out!')
         except AssertionError as error:
-            args_array = error.args[0].split('\n')
+            # args_array = error.args[0].split('\n')
             print(f'Error on input: {test_case}')
-            print(f'Expected: {args_array[1][2:]}')
-            print(f'Got: {args_array[2][2:]}')
+            print(f'Expected: {expected}')
+            print(f'Got: {self.sanitize_output(actual)}')
 
     def test_cases(self): # to be implemented in base class
         return {}

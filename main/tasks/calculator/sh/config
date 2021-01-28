@@ -1,0 +1,3 @@
+[Commands]
+file = calc.sh
+run = sh ${file}

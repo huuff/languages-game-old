@@ -40,6 +40,11 @@ class BaseTest():
             self.test_class.assertEqual(expected, self.sanitize_output(actual))
         except subprocess.TimeoutExpired:
             print('Timed out!')
+        except AssertionError as error:
+            args_array = error.args[0].split('\n')
+            print(f'Error on input: {test_case}')
+            print(f'Expected: {args_array[1][2:]}')
+            print(f'Got: {args_array[2][2:]}')
 
     def test_cases(self): # to be implemented in base class
         return {}

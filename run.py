@@ -10,5 +10,7 @@ elif task_name == 'sorting' or task_name == 'sort':
     import main.tasks.sorting.test as task
 elif task_name == 'http-server' or task_name == 'server':
     import main.tasks.http_server.test as task
+elif task_name == 'calculator' or task_name == 'calc':
+    import main.tasks.calculator.test as task
 
 task.Test(os.path.dirname(task.__file__)).test_template()

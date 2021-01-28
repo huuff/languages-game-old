@@ -1,14 +1,12 @@
 import os
 import subprocess
 import unittest
-import configparser
 import sys
 import glob
 import copy
 import pathlib
 from . import command
-
-config_file = 'config'
+from . import config
 
 class BaseTest():
     test_class = unittest.TestCase()
@@ -22,43 +20,27 @@ class BaseTest():
             return output
 
     def test_template(self):
-        config = configparser.ConfigParser(defaults = {
-                'file': '', 
-                'run': '',
-                'timeout': 10_000,
-                },
-                interpolation=configparser.ExtendedInterpolation())
-        config.add_section('Commands')
-        self.recursive_descent(self.root_path, config)
+        self.recursive_descent(self.root_path, config.default())
 
     def recursive_descent(self, root, config):
+        config = config.get_updated(root)
         files = list(root.glob('*'))
-        config_file = root.joinpath('config')
-        test_file = root.joinpath(config.get('Commands', 'file'))
-        if root.joinpath('config') in files:
-            config = copy.deepcopy(config)
-            config.read(config_file)
         for file in files:
             if file.is_dir():
                 print(f"{file.relative_to(self.root_path.parent)}")
                 self.recursive_descent(file, config)
-            if file == test_file:
-                if config.has_option("Commands", "pre"):
-                    command.OneShotCommand(config.get("Commands", "pre").split(' ')) \
-                    .set_dir(root) \
-                    .run(config.getint('Commands', 'timeout') / 1000)
+            if file == config.get_file(root):
+                if config.has_pre():
+                    config.get_pre(root).run(config.get_timeout())
                 for test_case, expected in self.test_cases().items():
                     self.run_test(root, config, test_case, expected)
-                if config.has_option("Commands", "post"):
-                    command.OneShotCommand(config.get("Commands", "post").split(' ')) \
-                    .set_dir(root) \
-                    .run(config.getint('Commands', 'timeout') / 1000)
+                if config.has_post():
+                    config.get_post(root).run(config.get_timeout())
 
     def run_test(self, directory, config, test_case, expected):
-        command = config.get('Commands', 'run').split(' ')
-        command = self.configure_command(test_case, command).set_dir(directory)
+        command = self.configure_command(test_case, config.get_run()).set_dir(directory)
         try:
-            actual = command.run(int(config.get('Commands','timeout')) / 1000)
+            actual = command.run(config.get_timeout())
             self.test_class.assertEqual(expected, self.sanitize_output(actual))
         except subprocess.TimeoutExpired:
             print('Timed out!')

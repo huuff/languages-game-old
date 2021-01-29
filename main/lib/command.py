@@ -3,23 +3,29 @@ import subprocess
 import concurrent.futures
 import time
 import timeit
+import copy
+
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
     def __init__(self, base_command):
-        self.command = base_command
+        self.command = base_command # TODO: is base_command necessary here? testbase could pass it
+        self.directory = ""
 
     def add_arg(self, arg):
-        self.command.append(arg)
-        return self
+        new = copy.deepcopy(self)
+        new.command.append(arg)
+        return new
 
     def add_args(self, args):
-        self.command.extend(args.split(' '))
-        return self
+        new = copy.deepcopy(self)
+        new.command.extend(args.split(' '))
+        return new
 
     def set_dir(self, directory):
-        self.directory = directory
-        return self
+        new = copy.deepcopy(self)
+        new.directory = directory
+        return new
     
     def run(self): pass
 
@@ -58,5 +64,18 @@ class LongRunningCommand(Command):
 
         return result
 
+class MultiCommand(Command):
+    def __init__(self, base_command):
+        super().__init__(base_command)
+        self.commands = []
 
-        
+    def add_command(self, command):
+        self.commands.append(command)
+        return self
+
+    # TODO: timeout for all commands maybe
+    def run(self, timeout):
+        result = []
+        for command in self.commands: # TODO: too dirty
+            result.append(command.set_dir(self.directory).run(timeout))
+        return result

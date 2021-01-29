@@ -1,5 +1,6 @@
 import subprocess
 import pathlib
+import types
 from . import command
 from . import config
 
@@ -36,14 +37,21 @@ class BaseTest():
         actual = 'placeholder' # just so the linter doesn't complain
         try:
             actual = command.run(config.get_timeout())
-            assert expected == self.sanitize_output(actual)
+            if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
+                for i in range(0, len(expected)):
+                    assert expected[i] == self.sanitize_output(actual[i])
+            else:
+                assert expected == self.sanitize_output(actual)
         except subprocess.TimeoutExpired:
             print('Timed out!')
         except AssertionError as error:
-            # args_array = error.args[0].split('\n')
             print(f'Error on input: {test_case}')
             print(f'Expected: {expected}')
-            print(f'Got: {self.sanitize_output(actual)}')
+            if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
+                print(f'Got: {actual}')
+            else:
+                print(f'Got: {self.sanitize_output(actual)}')
+            
 
     def test_cases(self): # to be implemented in base class
         return {}

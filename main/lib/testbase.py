@@ -3,6 +3,7 @@ import pathlib
 import types
 from . import command
 from . import config
+from . import testcase
 
 class BaseTest():
     def __init__(self, root_dir):
@@ -27,34 +28,41 @@ class BaseTest():
             if file == config.get_file(root):
                 if config.has_pre():
                     config.get_pre(root).run(config.get_timeout())
-                for test_case, expected in self.test_cases().items():
-                    self.run_test(root, config, test_case, expected)
+                for test_case in self.test_cases():
+                    self.run_test(root, config, test_case)
                 if config.has_post():
                     config.get_post(root).run(config.get_timeout())
 
-    def run_test(self, directory, config, test_case, expected):
-        command = self.configure_command(test_case, config.get_run()).set_dir(directory)
-        actual = 'placeholder' # just so the linter doesn't complain
+    def run_test(self, directory, config, test_case):
+        command = self.configure_command(config.get_run()).set_dir(directory)
         try:
-            actual = command.run(config.get_timeout())
-            if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
-                for i in range(0, len(expected)):
-                    assert expected[i] == self.sanitize_output(actual[i])
-            else:
-                assert expected == self.sanitize_output(actual)
+            test_case.run(command, config)
         except subprocess.TimeoutExpired:
             print('Timed out!')
-        except AssertionError as error:
-            print(f'Error on input: {test_case}')
-            print(f'Expected: {expected}')
-            if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
-                print(f'Got: {actual}')
-            else:
-                print(f'Got: {self.sanitize_output(actual)}')
+
+    # def run_test(self, directory, config, test_case, expected):
+        # command = self.configure_command(test_case, config.get_run()).set_dir(directory)
+        # actual = 'placeholder' # just so the linter doesn't complain
+        # try:
+            # actual = command.run(config.get_timeout())
+            # if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
+                # for i in range(0, len(expected)):
+                    # assert expected[i] == self.sanitize_output(actual[i])
+            # else:
+                # assert expected == self.sanitize_output(actual)
+        # except subprocess.TimeoutExpired:
+            # print('Timed out!')
+        # except AssertionError as error:
+            # print(f'Error on input: {test_case}')
+            # print(f'Expected: {expected}')
+            # if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
+                # print(f'Got: {actual}')
+            # else:
+                # print(f'Got: {self.sanitize_output(actual)}')
             
 
     def test_cases(self): # to be implemented in base class
         return {}
     
-    def configure_command(self, test_case, command): # to be implemented in base class
+    def configure_command(self, command): # to be implemented in base class
         return command.Command()

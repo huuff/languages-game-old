@@ -5,6 +5,7 @@ from .command import OneShotCommand
 
 # TODO: remove get from names
 # TODO: maybe automatically add default when reading
+# TODO: maybe it has too many responsibilities, why should config create commands?
 
 def default():
     default = configparser.ConfigParser(defaults = {

@@ -48,34 +48,17 @@ class OneShotCommand(Command):
         return process.communicate()[0]
 
 class LongRunningCommand(Command):
-    def __init__(self, base_command, func):
+    def __init__(self, base_command):
         super().__init__(base_command)
-        self.func = func
 
-    def run(self, timeout):
+    def run(self, func, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
         time.sleep(0.1) #TODO: parameterizable
 
-        future = executor.submit(self.func)
+        future = executor.submit(func)
         result = future.result(timeout)
 
         process.terminate()
         process.wait()
 
-        return result
-
-class MultiCommand(Command):
-    def __init__(self, base_command):
-        super().__init__(base_command)
-        self.commands = []
-
-    def add_command(self, command):
-        self.commands.append(command)
-        return self
-
-    # TODO: timeout for all commands maybe
-    def run(self, timeout):
-        result = []
-        for command in self.commands: # TODO: too dirty
-            result.append(command.set_dir(self.directory).run(timeout))
         return result

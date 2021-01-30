@@ -8,11 +8,11 @@ from ...lib.testcase import MultiTestCase
 class Test(testbase.BaseTest):
     def test_cases(self):
         return [
-            MultiTestCase(['', 'normaltest', '--reset'], ['', 'normaltest', ''])
+            MultiTestCase(['normaltest', '', '--reset'], ['', 'normaltest', ''])
                 ]
 
     def configure_command(self, base_command):
-        return MultiCommand(base_command)
+        return OneShotCommand(base_command)
 
 
 

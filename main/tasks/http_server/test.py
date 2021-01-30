@@ -3,8 +3,10 @@ import http.client
 import os
 from ...lib import testbase
 from ...lib import command
+from ...lib.testcase import FuncTestCase
 
 def make_get_request():
+    print("test")
     client = http.client.HTTPConnection('localhost', 8000) #TODO: Parameterize port
     client.request('GET', '')
     response = client.getresponse()
@@ -13,12 +15,10 @@ def make_get_request():
 
 class Test(testbase.BaseTest):
     def test_cases(self):
-        return {
-                '1': 200
-                }
+        return [
+                FuncTestCase(make_get_request, 200)
+                ]
 
-    # TODO: Improve test classes in their own class so they admit
-    # arbitrary code blocks besides input and output pairs
-    def configure_command(self, test_case, base_command):
-        return command.LongRunningCommand(base_command, make_get_request)
+    def configure_command(self, base_command):
+        return command.LongRunningCommand(base_command)
 

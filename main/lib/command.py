@@ -5,7 +5,6 @@ import time
 import timeit
 import copy
 
-
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
     def __init__(self, base_command):
@@ -15,11 +14,6 @@ class Command:
     def add_arg(self, arg):
         new = copy.deepcopy(self)
         new.command.append(arg)
-        return new
-
-    def add_args(self, args):
-        new = copy.deepcopy(self)
-        new.command.extend(args.split(' '))
         return new
 
     def set_dir(self, directory):

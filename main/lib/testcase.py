@@ -27,8 +27,12 @@ class SimpleTestCase(TestCase):
 
 # TODO: maybe ditch this one
 class ListTestCase(TestCase):
+    def __init__(self, input, expected):
+        super().__init__(map(str, input), ' '.join(map(str, expected)))
+
     def run(self, command, config):
-        command = command.add_args(self.input)
+        for arg in self.input:
+            command = command.add_arg(arg)
         actual = command.run(config.get_timeout())
         actual = sanitize_output(actual)
         try:

@@ -1,7 +1,5 @@
 from . import command
 
-#TODO: Seriously DRY this
-
 def sanitize_output(output):
     if isinstance(output, str):
         return output.rstrip('\n')
@@ -43,18 +41,13 @@ class ListTestCase(TestCase):
 
 class MultiTestCase(TestCase):
     def run(self, command, config):
-        actuals = [] # TODO: maybe tidy this up a little
-        try:
-            for i in range(0, len(self.input)):
-                curr_command = command.add_arg(self.input[i])
-                actual = curr_command.run(config.get_timeout())
-                actual = sanitize_output(actual)
-                actuals.append(actual)
-                assert self.expected[i] == actual
-        except AssertionError as error:
-            print(f'Error on input: {self.input}')
-            print(f'Expected: {self.expected}')
-            print(f'Got: {actuals} before stopping')
+        actuals = [] 
+        for i in range(0, len(self.input)):
+            curr_command = command.add_arg(self.input[i])
+            actual = curr_command.run(config.get_timeout())
+            actual = sanitize_output(actual)
+            actuals.append(actual)
+        assert_equals(self.input, self.expected, actuals)
 
 class FuncTestCase(TestCase):
     def run(self, command, config):

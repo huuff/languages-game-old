@@ -8,6 +8,15 @@ def sanitize_output(output):
     else:
         return output
 
+def assert_equals(input, expected, actual):
+    try:
+        assert expected == actual
+    except AssertionError as error:
+        print(f'Error on input: {input}')
+        print(f'Expected: {expected}')
+        print(f'Got: {actual}')
+
+
 class TestCase:
     def __init__(self, input, expected):
         self.input = input
@@ -18,12 +27,7 @@ class SimpleTestCase(TestCase):
         command = command.add_arg(self.input)
         actual = command.run(config.get_timeout())
         actual = sanitize_output(actual)
-        try:
-            assert self.expected == actual
-        except AssertionError as error:
-            print(f'Error on input: {self.input}')
-            print(f'Expected: {self.expected}')
-            print(f'Got: {actual}')
+        assert_equals(self.input, self.expected, actual)
 
 # TODO: maybe ditch this one
 class ListTestCase(TestCase):
@@ -35,12 +39,7 @@ class ListTestCase(TestCase):
             command = command.add_arg(arg)
         actual = command.run(config.get_timeout())
         actual = sanitize_output(actual)
-        try:
-            assert self.expected == actual
-        except AssertionError as error:
-            print(f'Error on input: {self.input}')
-            print(f'Expected: {self.expected}')
-            print(f'Got: {actual}')
+        assert_equals(self.input, self.expected, actual)
 
 class MultiTestCase(TestCase):
     def run(self, command, config):
@@ -61,9 +60,4 @@ class FuncTestCase(TestCase):
     def run(self, command, config):
         actual = command.run(self.input, config.get_timeout())
         actual = sanitize_output(actual)
-        try:
-            assert self.expected == actual
-        except AssertionError as error:
-            print(f'Error on input: {self.input}')
-            print(f'Expected: {self.expected}')
-            print(f'Got: {actual}')
+        assert_equals(self.input, self.expected, actual)

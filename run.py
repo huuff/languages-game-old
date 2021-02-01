@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 import sys
 import os
+import argparse
 
-task_name = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('task', type=str)
+args = parser.parse_args()
+task_name = args.task
 
 if task_name == 'fibonacci' or task_name == 'fib':
     import main.tasks.fibonacci.test as task

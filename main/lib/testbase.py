@@ -34,32 +34,11 @@ class BaseTest():
                     config.get_post(root).run(config.get_timeout())
 
     def run_test(self, directory, config, test_case):
-        command = self.configure_command(config.get_run()).set_dir(directory)
+        command = self.configure_command(config.get_run()).set_dir(directory).set_config(config)
         try:
             test_case.run(command, config)
         except subprocess.TimeoutExpired:
             print('Timed out!')
-
-    # def run_test(self, directory, config, test_case, expected):
-        # command = self.configure_command(test_case, config.get_run()).set_dir(directory)
-        # actual = 'placeholder' # just so the linter doesn't complain
-        # try:
-            # actual = command.run(config.get_timeout())
-            # if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
-                # for i in range(0, len(expected)):
-                    # assert expected[i] == self.sanitize_output(actual[i])
-            # else:
-                # assert expected == self.sanitize_output(actual)
-        # except subprocess.TimeoutExpired:
-            # print('Timed out!')
-        # except AssertionError as error:
-            # print(f'Error on input: {test_case}')
-            # print(f'Expected: {expected}')
-            # if isinstance(expected, list): # TODO: this is a hack, must implement test cases to deal with it
-                # print(f'Got: {actual}')
-            # else:
-                # print(f'Got: {self.sanitize_output(actual)}')
-            
 
     def test_cases(self): # to be implemented in base class
         return {}

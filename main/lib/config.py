@@ -2,6 +2,7 @@ import configparser
 import pathlib
 import copy
 from .command import OneShotCommand
+from .logger import *
 
 # TODO: remove get from names
 # TODO: maybe automatically add default when reading
@@ -12,6 +13,7 @@ def default():
             'file': '', 
             'run': '',
             'timeout': 10_000,
+            'log_level': 'none',
             },
             interpolation=configparser.ExtendedInterpolation())
     default.add_section('Commands')
@@ -43,6 +45,9 @@ class Config:
 
     def get_post(self, root):
         return OneShotCommand(self.commands_config.get('post').split(' ')).set_dir(root)
+
+    def get_logger(self):
+        return Logger(Level[self.commands_config.get('log_level')])
 
     def get_updated(self, root):
         config_file = root.joinpath('config')

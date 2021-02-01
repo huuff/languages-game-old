@@ -4,12 +4,14 @@ import concurrent.futures
 import time
 import timeit
 import copy
+from .logger import *
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
     def __init__(self, base_command):
         self.command = base_command # TODO: is base_command necessary here? testbase could pass it
         self.directory = ""
+        self.config = ""
 
     def add_arg(self, arg):
         new = copy.deepcopy(self)
@@ -19,6 +21,11 @@ class Command:
     def set_dir(self, directory):
         new = copy.deepcopy(self)
         new.directory = directory
+        return new
+    
+    def set_config(self, config):
+        new = copy.deepcopy(self)
+        new.config = config
         return new
     
     def run(self): pass
@@ -34,7 +41,7 @@ class OneShotCommand(Command):
             start = timeit.default_timer()
             process.wait(timeout)
             end = timeit.default_timer()
-            print("Took: ", round(end - start, 5))
+            self.config.get_logger().log("Took: {round(end-start, 5)}", Level.INFO)
         except subprocess.TimeoutExpired as err:
             process.kill()
             print(process.communicate()[0])
@@ -42,9 +49,6 @@ class OneShotCommand(Command):
         return process.communicate()[0]
 
 class LongRunningCommand(Command):
-    def __init__(self, base_command):
-        super().__init__(base_command)
-
     def run(self, func, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
         time.sleep(0.1) #TODO: parameterizable

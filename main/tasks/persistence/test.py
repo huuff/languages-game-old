@@ -11,8 +11,3 @@ class Test(testbase.BaseTest):
             MultiTestCase(['normaltest', '', '--reset'], ['', 'normaltest', ''])
                 ]
 
-    def configure_command(self, base_command):
-        return OneShotCommand(base_command)
-
-
-

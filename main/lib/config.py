@@ -13,7 +13,7 @@ def default():
             'file': '', 
             'run': '',
             'timeout': 10_000,
-            'log_level': 'none',
+            'log_level': 'info',
             },
             interpolation=configparser.ExtendedInterpolation())
     default.add_section('Commands')
@@ -38,16 +38,16 @@ class Config:
         return self.config_parser.has_option('Commands', 'post')
 
     def get_pre(self, root):
-        return OneShotCommand(self.commands_config.get('pre').split(' ')).set_dir(root)
+        return OneShotCommand(self.commands_config.get('pre').split(' '), self).set_dir(root)
 
     def get_run(self):
         return self.commands_config.get('run').split(' ')
 
     def get_post(self, root):
-        return OneShotCommand(self.commands_config.get('post').split(' ')).set_dir(root)
+        return OneShotCommand(self.commands_config.get('post').split(' '), self).set_dir(root)
 
     def get_logger(self):
-        return Logger(Level[self.commands_config.get('log_level')])
+        return Logger(Level[self.commands_config.get('log_level').upper()])
 
     def get_updated(self, root):
         config_file = root.joinpath('config')

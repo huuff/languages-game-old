@@ -16,6 +16,3 @@ class Test(testbase.BaseTest):
             ListTestCase(randomCase, randomCaseExpected),
                 ]
 
-    def configure_command(self, baseCommand):
-        return command.OneShotCommand(baseCommand)
-

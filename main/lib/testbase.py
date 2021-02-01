@@ -34,14 +34,10 @@ class BaseTest():
                     config.get_post(root).run(config.get_timeout())
 
     def run_test(self, directory, config, test_case):
-        command = self.configure_command(config.get_run()).set_dir(directory).set_config(config)
         try:
-            test_case.run(command, config)
+            test_case.run(config.get_run(), directory, config)
         except subprocess.TimeoutExpired:
             print('Timed out!')
 
     def test_cases(self): # to be implemented in base class
         return {}
-    
-    def configure_command(self, command): # to be implemented in base class
-        return command.Command()

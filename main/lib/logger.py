@@ -10,5 +10,5 @@ class Logger():
         self.level = level
 
     def log(self, message, level):
-        if (self.level >= level):
+        if (self.level.value >= level.value):
             print(message)

@@ -1,4 +1,4 @@
-from . import command
+from .command import OneShotCommand, LongRunningCommand
 
 def sanitize_output(output):
     if isinstance(output, str):
@@ -21,8 +21,8 @@ class TestCase:
         self.expected = expected
 
 class SimpleTestCase(TestCase):
-    def run(self, command, config):
-        command = command.add_arg(self.input)
+    def run(self, base_command, root, config):
+        command = OneShotCommand(base_command, config).set_dir(root).add_arg(self.input)
         actual = command.run(config.get_timeout())
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual)
@@ -32,7 +32,8 @@ class ListTestCase(TestCase):
     def __init__(self, input, expected):
         super().__init__(map(str, input), ' '.join(map(str, expected)))
 
-    def run(self, command, config):
+    def run(self, base_command, root, config):
+        command = OneShotCommand(base_command, config).set_dir(root)
         for arg in self.input:
             command = command.add_arg(arg)
         actual = command.run(config.get_timeout())
@@ -40,7 +41,8 @@ class ListTestCase(TestCase):
         assert_equals(self.input, self.expected, actual)
 
 class MultiTestCase(TestCase):
-    def run(self, command, config):
+    def run(self, base_command, root, config):
+        command = OneShotCommand(base_command, config).set_dir(root)
         actuals = [] 
         for i in range(0, len(self.input)):
             curr_command = command.add_arg(self.input[i])
@@ -50,7 +52,8 @@ class MultiTestCase(TestCase):
         assert_equals(self.input, self.expected, actuals)
 
 class FuncTestCase(TestCase):
-    def run(self, command, config):
+    def run(self, base_command, root, config):
+        command = LongRunningCommand(base_command, config).set_dir(root)
         actual = command.run(self.input, config.get_timeout())
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual)

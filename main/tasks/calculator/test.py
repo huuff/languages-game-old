@@ -16,6 +16,3 @@ class Test(testbase.BaseTest):
             SimpleTestCase('10.0 / 3.0', '3.333'),
             ]
 
-    def configure_command(self, base_command):
-        return command.OneShotCommand(base_command)
-

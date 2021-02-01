@@ -16,6 +16,3 @@ class Test(testbase.BaseTest):
                 SimpleTestCase('35', '9227465')
                 ];
 
-    def configure_command(self, base_command):
-        return command.OneShotCommand(base_command)
-

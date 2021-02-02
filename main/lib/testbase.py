@@ -6,7 +6,8 @@ from . import config
 from . import testcase
 
 class BaseTest():
-    def __init__(self, root_dir):
+    def __init__(self, root_dir, test_cases):
+        self.test_cases = test_cases
         self.root_path = pathlib.Path(root_dir)
 
     def sanitize_output(self, output):
@@ -28,7 +29,7 @@ class BaseTest():
             if file == config.get_file(root):
                 if config.has_pre():
                     config.get_pre(root).run(config.get_timeout())
-                for test_case in self.test_cases():
+                for test_case in self.test_cases:
                     self.run_test(root, config, test_case)
                 if config.has_post():
                     config.get_post(root).run(config.get_timeout())
@@ -38,6 +39,3 @@ class BaseTest():
             test_case.run(config.get_run(), directory, config)
         except subprocess.TimeoutExpired:
             print('Timed out!')
-
-    def test_cases(self): # to be implemented in base class
-        return {}

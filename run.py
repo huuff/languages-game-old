@@ -2,6 +2,7 @@
 import sys
 import os
 import argparse
+from main.lib import testbase
 
 parser = argparse.ArgumentParser()
 parser.add_argument('task', type=str)
@@ -19,4 +20,5 @@ elif task_name == 'calculator' or task_name == 'calc':
 elif task_name == 'persistence' or task_name == 'persist':
     import main.tasks.persistence.test as task
 
-task.Test(os.path.dirname(task.__file__)).test_template()
+# task.Test(os.path.dirname(task.__file__)).test_template()
+testbase.BaseTest(os.path.dirname(task.__file__), task.test_cases()).test_template()

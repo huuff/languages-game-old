@@ -33,6 +33,7 @@ class OneShotCommand(Command):
                 universal_newlines=True,
                 cwd=self.directory)
         try:
+            self.config.get_logger().log(f"Running {process.args}", Level.DEBUG)
             start = timeit.default_timer()
             process.wait(timeout)
             end = timeit.default_timer()
@@ -46,6 +47,7 @@ class OneShotCommand(Command):
 class LongRunningCommand(Command):
     def run(self, func, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
+        self.config.get_logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(func)

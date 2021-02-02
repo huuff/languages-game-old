@@ -6,9 +6,10 @@ from . import config
 from . import testcase
 
 class BaseTest():
-    def __init__(self, root_dir, test_cases):
+    def __init__(self, root_dir, test_cases, default_config):
         self.test_cases = test_cases
         self.root_path = pathlib.Path(root_dir)
+        self.default_config = default_config
 
     def sanitize_output(self, output):
         if isinstance(output, str):
@@ -16,8 +17,8 @@ class BaseTest():
         else:
             return output
 
-    def test_template(self):
-        self.recursive_descent(self.root_path, config.default())
+    def start(self):
+        self.recursive_descent(self.root_path, self.default_config)
 
     def recursive_descent(self, root, config):
         config = config.get_updated(root)

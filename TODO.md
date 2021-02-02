@@ -4,4 +4,4 @@
 * Add type hinting
 * Show a table with results
 * Check error with http server timeout
-* Set config from command line arguments, at least logging
+* Set config from command line arguments

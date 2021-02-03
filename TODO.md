@@ -3,5 +3,5 @@
 * Or maybe switch it for key-value
 * Add type hinting
 * Show a table with results
-* Check error with http server timeout
 * Set config from command line arguments
+* Better timeout logging (add input, specify level)

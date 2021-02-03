@@ -6,6 +6,7 @@ import configparser
 from pathlib import Path
 from main.lib import testbase
 from main.lib.config import Config
+from main.lib.tasks import import_task
 
 
 def parse_arguments():
@@ -25,21 +26,6 @@ def create_default_config(args):
             interpolation=configparser.ExtendedInterpolation())
     default_configparser.add_section('Commands')
     return Config(default_configparser)
-
-def import_task(task_name):
-    if task_name == 'fibonacci' or task_name == 'fib':
-        import main.tasks.fibonacci.test as task
-    elif task_name == 'sorting' or task_name == 'sort':
-        import main.tasks.sorting.test as task
-    elif task_name == 'http-server' or task_name == 'server':
-        import main.tasks.http_server.test as task
-    elif task_name == 'calculator' or task_name == 'calc':
-        import main.tasks.calculator.test as task
-    elif task_name == 'persistence' or task_name == 'persist':
-        import main.tasks.persistence.test as task
-    else:
-        import main.tasks.fibonacci as task # TODO: better default for when task is missing
-    return task
 
 args = parse_arguments()
 default_config = create_default_config(args)

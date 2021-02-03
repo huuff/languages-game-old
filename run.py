@@ -12,13 +12,14 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('task', type=str, help='Name of the task to be run')
     parser.add_argument('-l', '--level', nargs='?', type=str, help='Level of logging')
+    parser.add_argument('-t', '--timeout', nargs='?', type=int, help='Maximum test running time')
     return parser.parse_args()
 
 def create_default_config(args):
     default_configparser = configparser.ConfigParser(defaults = {
             'file': '', 
             'run': '',
-            'timeout': 10_000,
+            'timeout': args.timeout if args.timeout != None else 10_000 ,
             'log_level': args.level if args.level != None else 'info',
             },
             interpolation=configparser.ExtendedInterpolation())

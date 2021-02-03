@@ -51,9 +51,12 @@ class LongRunningCommand(Command):
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(func)
-        result = future.result(timeout)
-
-        process.terminate()
-        process.wait()
+        try:
+            result = future.result(timeout)
+        except concurrent.futures.TimeoutError as e:
+            raise e
+        finally:
+            process.terminate()
+            process.wait()
 
         return result

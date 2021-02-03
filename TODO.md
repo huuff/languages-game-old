@@ -1,4 +1,3 @@
-* Put logs in appropriate places
 * Some more cases for persistence
 * Or maybe switch it for key-value
 * Add type hinting

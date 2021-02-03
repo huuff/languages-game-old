@@ -4,6 +4,7 @@ import types
 from . import command
 from . import config
 from . import testcase
+from .logger import *
 from concurrent.futures import TimeoutError
 
 class BaseTest():
@@ -40,4 +41,4 @@ class BaseTest():
         try:
             test_case.run(config.get_run(), directory, config)
         except (subprocess.TimeoutExpired, TimeoutError):
-            print('Timed out!')
+            config.get_logger().log('Timed out!', Level.FAIL)

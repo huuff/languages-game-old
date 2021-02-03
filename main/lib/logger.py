@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Level(Enum):
-    NONE = 0
+    FAIL = 0
     INFO = 1
     DEBUG = 2
 

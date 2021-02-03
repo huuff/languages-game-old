@@ -21,7 +21,7 @@ def create_default_config(args):
             'file': '', 
             'run': '',
             'timeout': args.timeout if args.timeout != None else 10_000 ,
-            'log_level': args.level if args.level != None else 'info',
+            'log_level': args.level if args.level != None else 'fail',
             },
             interpolation=configparser.ExtendedInterpolation())
     default_configparser.add_section('Commands')

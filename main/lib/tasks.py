@@ -1,4 +1,5 @@
 import importlib
+import re
 
 tasks = {
             "fibonacci": ".fibonacci",
@@ -8,6 +9,15 @@ tasks = {
             "persistence": ".persistence",
         }
 
-def import_task(task_name):
-    task = importlib.import_module(tasks[task_name] + ".test", "main.tasks")
-    return task
+def import_tasks(task_name):
+    if (task_name == "all"):
+        regex = re.compile(r".*")
+    else:
+        regex = re.compile(rf".*{task_name}.*")
+
+    matching_tasks = []
+    for name, module in tasks.items():
+        if regex.fullmatch(name):
+            task = importlib.import_module(module + ".test", "main.tasks")
+            matching_tasks.append(task)
+    return matching_tasks

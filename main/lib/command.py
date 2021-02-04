@@ -8,9 +8,9 @@ from .logger import *
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
-    def __init__(self, base_command, config):
+    def __init__(self, base_command, directory, config):
         self.command = base_command # TODO: is base_command could get it from config
-        self.directory = ""
+        self.directory = directory
         self.config = config
 
     def add_arg(self, arg):
@@ -22,11 +22,6 @@ class Command:
             new.command.append(arg)
         return new
 
-    def set_dir(self, directory): # TODO: remove it
-        new = copy.deepcopy(self)
-        new.directory = directory
-        return new
-    
     def run(self): pass
 
 class OneShotCommand(Command):
@@ -49,8 +44,8 @@ class OneShotCommand(Command):
         return process.communicate()[0]
 
 class LongRunningCommand(Command):
-    def __init__(self, base_command, config, func):
-        super().__init__(base_command, config)
+    def __init__(self, base_command, root, config, func):
+        super().__init__(base_command, root, config)
         self.func = func
 
     def run(self, timeout):

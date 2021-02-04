@@ -38,13 +38,13 @@ class Config:
         return self.config_parser.has_option('Commands', 'post')
 
     def get_pre(self, root):
-        return OneShotCommand(self.commands_config.get('pre').split(' '), self).set_dir(root)
+        return OneShotCommand(self.commands_config.get('pre').split(' '),root, self)
 
     def get_run(self):
         return self.commands_config.get('run').split(' ')
 
     def get_post(self, root):
-        return OneShotCommand(self.commands_config.get('post').split(' '), self).set_dir(root)
+        return OneShotCommand(self.commands_config.get('post').split(' '), root, self)
 
     def get_logger(self):
         return Logger(Level[self.commands_config.get('log_level').upper()])

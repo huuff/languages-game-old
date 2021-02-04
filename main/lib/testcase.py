@@ -34,14 +34,14 @@ class SimpleTestCase(TestCase):
         super().__init__(input, expected)
 
     def run(self, base_command, root, config):
-        command = OneShotCommand(base_command, config).set_dir(root).add_arg(self.input)
+        command = OneShotCommand(base_command, root, config).add_arg(self.input)
         actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())
 
 class MultiTestCase(TestCase):
     def run(self, base_command, root, config):
-        command = OneShotCommand(base_command, config).set_dir(root)
+        command = OneShotCommand(base_command, root, config)
         actuals = [] 
         for i in range(0, len(self.input)):
             cur_command = command.add_arg(self.input[i])
@@ -52,7 +52,7 @@ class MultiTestCase(TestCase):
 
 class FuncTestCase(TestCase):
     def run(self, base_command, root, config):
-        command = LongRunningCommand(base_command, config, self.input).set_dir(root)
+        command = LongRunningCommand(base_command, root, config, self.input)
         actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())

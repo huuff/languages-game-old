@@ -4,3 +4,4 @@
 * Show a table with results
 * Set config from command line arguments
 * On tasks.py, maybe the dict isn't even necessary, can't a finder discover the modules?
+* Figure out what to do with passing around config all the time, maybe some kind of DI would do?

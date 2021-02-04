@@ -28,21 +28,13 @@ class TestCase:
         self.expected = expected
 
 class SimpleTestCase(TestCase):
+    def __init__(self, input, expected):
+        if isinstance(expected, list):
+            expected = ' '.join(list(map(str, expected)))
+        super().__init__(input, expected)
+
     def run(self, base_command, root, config):
         command = OneShotCommand(base_command, config).set_dir(root).add_arg(self.input)
-        actual = run_with_timeout(command, config)
-        actual = sanitize_output(actual)
-        assert_equals(self.input, self.expected, actual, config.get_logger())
-
-# TODO: maybe ditch this one
-class ListTestCase(TestCase):
-    def __init__(self, input, expected):
-        super().__init__(list(map(str, input)), ' '.join(list(map(str, expected))))
-
-    def run(self, base_command, root, config):
-        command = OneShotCommand(base_command, config).set_dir(root)
-        for arg in self.input:
-            command = command.add_arg(arg)
         actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())

@@ -15,7 +15,11 @@ class Command:
 
     def add_arg(self, arg):
         new = copy.deepcopy(self)
-        new.command.append(arg)
+        if isinstance(arg, list):
+            for a in list(map(str, arg)):
+                new.command.append(a)
+        else:
+            new.command.append(arg)
         return new
 
     def set_dir(self, directory): # TODO: remove it

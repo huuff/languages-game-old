@@ -1,5 +1,6 @@
 from .command import OneShotCommand, LongRunningCommand
 from .logger import *
+import subprocess
 
 def sanitize_output(output):
     if isinstance(output, str):
@@ -15,6 +16,11 @@ def assert_equals(input, expected, actual, logger):
         logger.log(f'Expected: {expected}', Level.FAIL)
         logger.log(f'Got: {actual}', Level.FAIL)
 
+def run_with_timeout(command, config):
+    try:
+        return command.run(config.get_timeout())
+    except (subprocess.TimeoutExpired, TimeoutError):
+        return "TIMED OUT"
 
 class TestCase:
     def __init__(self, input, expected):
@@ -24,7 +30,7 @@ class TestCase:
 class SimpleTestCase(TestCase):
     def run(self, base_command, root, config):
         command = OneShotCommand(base_command, config).set_dir(root).add_arg(self.input)
-        actual = command.run(config.get_timeout())
+        actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())
 
@@ -37,7 +43,7 @@ class ListTestCase(TestCase):
         command = OneShotCommand(base_command, config).set_dir(root)
         for arg in self.input:
             command = command.add_arg(arg)
-        actual = command.run(config.get_timeout())
+        actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())
 
@@ -46,15 +52,15 @@ class MultiTestCase(TestCase):
         command = OneShotCommand(base_command, config).set_dir(root)
         actuals = [] 
         for i in range(0, len(self.input)):
-            curr_command = command.add_arg(self.input[i])
-            actual = curr_command.run(config.get_timeout())
+            cur_command = command.add_arg(self.input[i])
+            actual = run_with_timeout(cur_command, config)
             actual = sanitize_output(actual)
             actuals.append(actual)
         assert_equals(self.input, self.expected, actuals, config.get_logger())
 
 class FuncTestCase(TestCase):
     def run(self, base_command, root, config):
-        command = LongRunningCommand(base_command, config).set_dir(root)
-        actual = command.run(self.input, config.get_timeout())
+        command = LongRunningCommand(base_command, config, self.input).set_dir(root)
+        actual = run_with_timeout(command, config)
         actual = sanitize_output(actual)
         assert_equals(self.input, self.expected, actual, config.get_logger())

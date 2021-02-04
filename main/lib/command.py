@@ -9,7 +9,7 @@ from .logger import *
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 class Command:
     def __init__(self, base_command, config):
-        self.command = base_command # TODO: is base_command necessary here? testbase could pass it
+        self.command = base_command # TODO: is base_command could get it from config
         self.directory = ""
         self.config = config
 
@@ -45,12 +45,16 @@ class OneShotCommand(Command):
         return process.communicate()[0]
 
 class LongRunningCommand(Command):
-    def run(self, func, timeout):
+    def __init__(self, base_command, config, func):
+        super().__init__(base_command, config)
+        self.func = func
+
+    def run(self, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
         self.config.get_logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
-        future = executor.submit(func)
+        future = executor.submit(self.func)
         try:
             result = future.result(timeout)
         except concurrent.futures.TimeoutError as e:

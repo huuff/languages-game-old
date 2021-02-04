@@ -33,12 +33,6 @@ class BaseTest():
                 if config.has_pre():
                     config.get_pre(root).run(config.get_timeout())
                 for test_case in self.test_cases:
-                    self.run_test(root, config, test_case)
+                    test_case.run(config.get_run(), root, config)
                 if config.has_post():
                     config.get_post(root).run(config.get_timeout())
-
-    def run_test(self, directory, config, test_case):
-        try:
-            test_case.run(config.get_run(), directory, config)
-        except (subprocess.TimeoutExpired, TimeoutError):
-            config.get_logger().log('Timed out!', Level.FAIL)

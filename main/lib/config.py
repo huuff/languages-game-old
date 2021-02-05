@@ -8,17 +8,7 @@ from .logger import *
 # TODO: maybe automatically add default when reading
 # TODO: maybe it has too many responsibilities, why should config create commands?
 
-def default():
-    default = configparser.ConfigParser(defaults = {
-            'file': '', 
-            'run': '',
-            'timeout': 10_000,
-            'log_level': 'info',
-            },
-            interpolation=configparser.ExtendedInterpolation())
-    default.add_section('Commands')
-    return Config(default)
-
+current = None
 
 class Config:
     def __init__(self, config_parser):

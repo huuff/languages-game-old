@@ -5,8 +5,8 @@ import argparse
 import configparser
 from pathlib import Path
 from main.lib import testbase
-from main.lib.config import Config
 from main.lib.tasks import import_tasks
+import main.lib.config as config
 
 
 def parse_arguments():
@@ -25,14 +25,13 @@ def create_default_config(args):
             },
             interpolation=configparser.ExtendedInterpolation())
     default_configparser.add_section('Commands')
-    return Config(default_configparser)
+    return config.Config(default_configparser)
 
 args = parse_arguments()
-default_config = create_default_config(args)
+config.current = create_default_config(args)
 tasks = import_tasks(args.task)
 
 for task in tasks:
     testbase.BaseTest(os.path.dirname(task.__file__), \
-            task.test_cases(), \
-            default_config) \
+            task.test_cases()) \
             .start()

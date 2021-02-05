@@ -8,10 +8,10 @@ from .logger import *
 from concurrent.futures import TimeoutError
 
 class BaseTest():
-    def __init__(self, root_dir, test_cases, default_config):
+    def __init__(self, root_dir, test_cases):
         self.test_cases = test_cases
         self.root_path = pathlib.Path(root_dir)
-        self.default_config = default_config
+        self.default_config = config.current
 
     def sanitize_output(self, output):
         if isinstance(output, str):

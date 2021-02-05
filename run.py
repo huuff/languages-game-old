@@ -14,6 +14,7 @@ def parse_arguments():
     parser.add_argument('task', type=str, help='Name of the task to be run')
     parser.add_argument('-l', '--level', nargs='?', type=str, help='Level of logging')
     parser.add_argument('-t', '--timeout', nargs='?', type=int, help='Maximum test running time')
+    parser.add_argument('-p', '--port', nargs='?', type=int, help='Port on which target application is running')
     return parser.parse_args()
 
 def create_default_config(args):
@@ -22,6 +23,7 @@ def create_default_config(args):
             'run': '',
             'timeout': args.timeout if args.timeout != None else 10_000 ,
             'log_level': args.level if args.level != None else 'fail',
+            'port': args.port if args.port != None else 32_223,
             },
             interpolation=configparser.ExtendedInterpolation())
     default_configparser.add_section('Commands')

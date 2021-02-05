@@ -41,6 +41,9 @@ class Config:
     def get_logger(self):
         return Logger(Level[self.commands_config.get('log_level').upper()])
 
+    def get_port(self):
+        return self.commands_config.getint('port')
+
     def get_updated(self, root):
         config_file = root.joinpath('config')
         if config_file.is_file():

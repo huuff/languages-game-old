@@ -5,7 +5,6 @@ from .logger import *
 
 # TODO: remove get from names
 # TODO: maybe automatically add default when reading
-# TODO: maybe it has too many responsibilities, why should config create commands?
 
 stack = []
 

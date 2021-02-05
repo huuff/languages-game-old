@@ -13,7 +13,7 @@ executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
 class Command:
     def __init__(self, base_command, directory):
-        self.command = base_command # TODO: is base_command could get it from config
+        self.command = base_command # TODO: is base_command necessary here? could get it from config
         self.directory = directory
 
     def add_arg(self, arg):

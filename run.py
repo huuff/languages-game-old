@@ -28,7 +28,7 @@ def create_default_config(args):
     return config.Config(default_configparser)
 
 args = parse_arguments()
-config.current = create_default_config(args)
+config.stack.append(create_default_config(args))
 tasks = import_tasks(args.task)
 
 for task in tasks:

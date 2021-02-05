@@ -4,14 +4,17 @@ import concurrent.futures
 import time
 import timeit
 import copy
+from ..lib import config
 from .logger import *
 
+# TODO: maybe timeout could also go into constructor
+
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
 class Command:
-    def __init__(self, base_command, directory, config):
+    def __init__(self, base_command, directory):
         self.command = base_command # TODO: is base_command could get it from config
         self.directory = directory
-        self.config = config
 
     def add_arg(self, arg):
         new = copy.deepcopy(self)
@@ -32,11 +35,11 @@ class OneShotCommand(Command):
                 universal_newlines=True,
                 cwd=self.directory)
         try:
-            self.config.get_logger().log(f"Running {process.args}", Level.DEBUG)
+            config.current().get_logger().log(f"Running {process.args}", Level.DEBUG)
             start = timeit.default_timer()
             process.wait(timeout)
             end = timeit.default_timer()
-            self.config.get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
+            config.current().get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
         except subprocess.TimeoutExpired as err:
             process.kill()
             print(process.communicate()[0])
@@ -44,13 +47,13 @@ class OneShotCommand(Command):
         return process.communicate()[0]
 
 class LongRunningCommand(Command):
-    def __init__(self, base_command, root, config, func):
-        super().__init__(base_command, root, config)
+    def __init__(self, base_command, root, func):
+        super().__init__(base_command, root)
         self.func = func
 
     def run(self, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
-        self.config.get_logger().log(f"Running {process.args}", Level.DEBUG)
+        config.current().get_logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(self.func)
@@ -63,3 +66,9 @@ class LongRunningCommand(Command):
             process.wait()
 
         return result
+
+def get_pre(root):
+    return OneShotCommand(config.current().get_pre(), root)
+
+def get_post(root):
+    return OneShotCommand(config.current().get_post(), root)

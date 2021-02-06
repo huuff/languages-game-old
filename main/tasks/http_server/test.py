@@ -3,10 +3,10 @@ import http.client
 import os
 from ...lib import command
 from ...lib.testcase import FuncTestCase
-from ...lib import config
+from ...lib.config import current as config
 
 def make_get_request():
-    client = http.client.HTTPConnection('localhost', config.current().get_port()) 
+    client = http.client.HTTPConnection('localhost', config().get_port()) 
     client.request('GET', '')
     response = client.getresponse()
     return response.status

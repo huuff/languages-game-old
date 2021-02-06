@@ -23,16 +23,17 @@ class BaseTest():
 
     def recursive_descent(self, root):
         config.stack.append(config.current().get_updated(root))
+        current_config = config.current()
         files = list(root.glob('*'))
         for file in files:
             if file.is_dir():
                 print(f"{file.relative_to(self.root_path.parent)}")
                 self.recursive_descent(file)
-            if file == config.current().get_file(root):
-                if config.current().has_pre():
-                    command.get_pre(root).run(config.current().get_timeout())
+            if file == current_config.get_file(root):
+                if current_config.has_pre():
+                    command.get_pre(root).run(current_config.get_timeout())
                 for test_case in self.test_cases:
-                    test_case.run(config.current().get_run(), root)
-                if config.current().has_post():
-                    command.get_post(root).run(config.current().get_timeout())
+                    test_case.run(current_config.get_run(), root)
+                if current_config.has_post():
+                    command.get_post(root).run(current_config.get_timeout())
         config.stack.pop()

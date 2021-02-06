@@ -1,7 +1,7 @@
 from .command import OneShotCommand, LongRunningCommand
 from .logger import *
 import subprocess
-from . import config
+from .config import current as config
 
 def sanitize_output(output):
     if isinstance(output, str):
@@ -10,7 +10,7 @@ def sanitize_output(output):
         return output
 
 def assert_equals(input, expected, actual):
-    logger = config.current().get_logger()
+    logger = config().get_logger()
     try:
         assert expected == actual
     except AssertionError as error:
@@ -20,7 +20,7 @@ def assert_equals(input, expected, actual):
 
 def run_with_timeout(command):
     try:
-        return command.run(config.current().get_timeout())
+        return command.run(config().get_timeout())
     except (subprocess.TimeoutExpired, TimeoutError):
         return "TIMED OUT"
 

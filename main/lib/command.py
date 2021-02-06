@@ -4,7 +4,7 @@ import concurrent.futures
 import time
 import timeit
 import copy
-from ..lib import config
+from ..lib.config import current as config
 from .logger import *
 
 # TODO: maybe timeout could also go into constructor
@@ -35,11 +35,11 @@ class OneShotCommand(Command):
                 universal_newlines=True,
                 cwd=self.directory)
         try:
-            config.current().get_logger().log(f"Running {process.args}", Level.DEBUG)
+            config().get_logger().log(f"Running {process.args}", Level.DEBUG)
             start = timeit.default_timer()
             process.wait(timeout)
             end = timeit.default_timer()
-            config.current().get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
+            config().get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
         except subprocess.TimeoutExpired as err:
             process.kill()
             print(process.communicate()[0])
@@ -53,7 +53,7 @@ class LongRunningCommand(Command):
 
     def run(self, timeout):
         process = subprocess.Popen(self.command, cwd=self.directory)
-        config.current().get_logger().log(f"Running {process.args}", Level.DEBUG)
+        config().get_logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(self.func)
@@ -68,7 +68,7 @@ class LongRunningCommand(Command):
         return result
 
 def get_pre(root):
-    return OneShotCommand(config.current().get_pre(), root)
+    return OneShotCommand(config().get_pre(), root)
 
 def get_post(root):
-    return OneShotCommand(config.current().get_post(), root)
+    return OneShotCommand(config().get_post(), root)

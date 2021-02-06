@@ -4,5 +4,5 @@
 * Show a table with results
 * Set config from command line arguments
 * On tasks.py, maybe the dict isn't even necessary, can't a finder discover the modules?
-* config.current().method() all the time looks cumbersome, could I shorten it somehow?
 * Better logging when printing command output
+* Move get updated in config to stack append

@@ -54,12 +54,3 @@ class Config:
 
     def get_port(self):
         return self.commands_config.getint('port')
-
-    def get_updated(self, root):
-        config_file = root.joinpath('config')
-        if config_file.is_file():
-            new_config = copy.deepcopy(self.config_parser)
-            new_config.read(config_file)
-            return Config(new_config)
-        else:
-            return self

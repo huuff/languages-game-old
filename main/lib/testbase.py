@@ -22,7 +22,7 @@ class BaseTest():
         self.recursive_descent(self.root_path)
 
     def recursive_descent(self, root):
-        config.stack.append(config.current().get_updated(root))
+        config.update(root)
         current_config = config.current()
         files = list(root.glob('*'))
         for file in files:
@@ -36,4 +36,4 @@ class BaseTest():
                     test_case.run(current_config.get_run(), root)
                 if current_config.has_post():
                     command.get_post(root).run(current_config.get_timeout())
-        config.stack.pop()
+        config.pop()

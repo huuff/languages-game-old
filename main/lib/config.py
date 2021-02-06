@@ -11,6 +11,18 @@ stack = []
 def current():
     return stack[-1]
 
+def update(root):
+    config_file = root.joinpath('config')
+    if config_file.is_file():
+        new_config = copy.deepcopy(current().config_parser)
+        new_config.read(config_file)
+        stack.append(Config(new_config))
+    else:
+        stack.append(current())
+
+def pop():
+    stack.pop()
+
 class Config:
     def __init__(self, config_parser):
         self.config_parser = config_parser

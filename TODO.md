@@ -5,4 +5,3 @@
 * Set config from command line arguments
 * On tasks.py, maybe the dict isn't even necessary, can't a finder discover the modules?
 * Better logging when printing command output
-* Move get updated in config to stack append

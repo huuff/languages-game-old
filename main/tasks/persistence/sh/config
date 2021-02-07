@@ -1,4 +1,3 @@
-[Commands]
 file = persist.sh
 run = sh ${file}
 post = rm db

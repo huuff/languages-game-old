@@ -1,3 +1,2 @@
-[Commands]
 file = sort.hs
 run = runhaskell ${file}

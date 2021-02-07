@@ -26,7 +26,6 @@ def create_default_config(args):
             'port': args.port if args.port != None else 32_223,
             },
             interpolation=configparser.ExtendedInterpolation())
-    default_configparser.add_section('Commands')
     return config.Config(default_configparser)
 
 args = parse_arguments()

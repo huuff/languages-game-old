@@ -1,4 +1,3 @@
-[Commands]
 file = fib.c
 pre = gcc ${file} -o exe
 run = ./exe

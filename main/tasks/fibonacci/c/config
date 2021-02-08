@@ -2,3 +2,4 @@ file = fib.c
 pre = gcc ${file} -o exe
 run = ./exe
 post = rm exe
+timeout = 2500

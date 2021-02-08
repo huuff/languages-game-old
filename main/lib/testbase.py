@@ -31,9 +31,9 @@ class BaseTest():
                 self.recursive_descent(file)
             if file == current_config.get_file(root):
                 if current_config.has_pre():
-                    command.get_pre(root).run(current_config.get_timeout())
+                    command.get_pre(root).run()
                 for test_case in self.test_cases:
                     test_case.run(current_config.get_run(), root)
                 if current_config.has_post():
-                    command.get_post(root).run(current_config.get_timeout())
+                    command.get_post(root).run()
         config.pop()

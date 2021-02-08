@@ -20,7 +20,7 @@ def assert_equals(input, expected, actual):
 
 def run_with_timeout(command):
     try:
-        return command.run(config().get_timeout())
+        return command.run()
     except (subprocess.TimeoutExpired, TimeoutError):
         return "TIMED OUT"
 

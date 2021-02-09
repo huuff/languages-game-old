@@ -4,16 +4,18 @@ import os
 from ...lib import command
 from ...lib.testcase import FuncTestCase
 from ...lib.config import current as config
+from functools import partial
 
-def make_get_request():
-    client = http.client.HTTPConnection('localhost', config().get_port()) 
-    client.request('GET', '')
+def make_get_request(path):
+    client = http.client.HTTPConnection(f'localhost', config().get_port()) 
+    client.request('GET', f'/{path}')
     response = client.getresponse()
     return response.status
 
 
 def test_cases():
     return [
-            FuncTestCase(make_get_request, 200)
+            FuncTestCase(partial(make_get_request, 'server'), 200),
+            FuncTestCase(partial(make_get_request, ''), 404)
             ]
 

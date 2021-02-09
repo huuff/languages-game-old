@@ -41,7 +41,9 @@ class OneShotCommand(Command):
             config().get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
         except subprocess.TimeoutExpired as err:
             process.kill()
-            print(process.communicate()[0])
+            stdout = process.communicate()[0]
+            if stdout != None:
+                config().get_logger().log(stdout, Level.FAIL)
             raise err
         return process.communicate()[0]
 
@@ -51,7 +53,12 @@ class LongRunningCommand(Command):
         self.func = func
 
     def run(self):
-        process = subprocess.Popen(self.command, cwd=self.directory)
+        process = subprocess.Popen(
+                self.command, 
+                cwd=self.directory,
+                universal_newlines=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
         config().get_logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
@@ -63,6 +70,7 @@ class LongRunningCommand(Command):
         finally:
             process.terminate()
             process.wait()
+            config().get_logger().log(process.communicate()[1], Level.INFO)
 
         return result
 

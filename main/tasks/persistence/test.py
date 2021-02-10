@@ -6,6 +6,6 @@ from ...lib.testcase import MultiTestCase
 
 def test_cases():
     return [
-        MultiTestCase(['normaltest', '', '--reset'], ['', 'normaltest', ''])
+        MultiTestCase([['key', 'value'], 'key', '--reset'], ['', 'value', ''])
             ]
 

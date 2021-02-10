@@ -6,7 +6,7 @@ tasks = {
             "sorting": ".sorting",
             "http-server": ".http_server",
             "calculator": ".calculator",
-            "persistence": ".persistence",
+            "key_value": ".key_value",
         }
 
 def import_tasks(task_name):

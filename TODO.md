@@ -6,3 +6,4 @@
 * Kill long commands better, there are a number of ways they could still be running
 * Supposedly, the idiomatic way to get command output is using subprocess.check_output(), I should look into it
 * Implement some way of after each for key-value
+* Add some interesting cases for regex_email, maybe look only for TLDs, domains etc, maybe regex_email is not the best name, find_emails?

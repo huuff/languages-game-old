@@ -5,7 +5,7 @@ from .config import current as config
 
 def sanitize_output(output):
     if isinstance(output, str):
-        return output.rstrip('\n')
+        return output.replace('\n', ' ').rstrip(' ')
     else:
         return output
 

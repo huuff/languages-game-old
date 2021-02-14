@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-import unittest
-import sys
-import os
-from ...lib import command
 from ...lib.testcase import SimpleTestCase
 
 def test_cases(): 

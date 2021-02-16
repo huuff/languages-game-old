@@ -72,7 +72,7 @@ class LongRunningCommand(Command):
             process.wait()
             config().get_logger().log(process.communicate()[1], Level.INFO)
 
-        return result
+        return str(result)
 
 def get_pre(root):
     return OneShotCommand(config().get_pre(), root)

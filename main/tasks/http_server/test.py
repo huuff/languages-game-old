@@ -15,7 +15,7 @@ def make_get_request(path):
 
 def test_cases():
     return [
-            FuncTestCase(partial(make_get_request, 'server'), 200),
-            FuncTestCase(partial(make_get_request, ''), 404)
+            FuncTestCase(partial(make_get_request, 'server'), '200'),
+            FuncTestCase(partial(make_get_request, ''), '404')
             ]
 

@@ -7,7 +7,7 @@ from ...lib.config import current as config
 from functools import partial
 
 def make_get_request(path):
-    client = http.client.HTTPConnection(f'localhost', config().get_port()) 
+    client = http.client.HTTPConnection(f'localhost', config().port()) 
     client.request('GET', f'/{path}')
     response = client.getresponse()
     return response.status

@@ -29,11 +29,11 @@ class BaseTest():
             if file.is_dir():
                 print(f"{file.relative_to(self.root_path.parent)}")
                 self.recursive_descent(file)
-            if file == current_config.get_file(root):
+            if file == current_config.file(root):
                 if current_config.has_pre():
                     command.get_pre(root).run()
                 for test_case in self.test_cases:
-                    test_case.run(current_config.get_run(), root)
+                    test_case.run(current_config.run(), root)
                 if current_config.has_post():
                     command.get_post(root).run()
         config.pop()

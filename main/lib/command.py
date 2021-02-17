@@ -13,7 +13,7 @@ class Command:
     def __init__(self, base_command, directory):
         self.command = base_command
         self.directory = directory
-        self.timeout = config().get_timeout()
+        self.timeout = config().timeout()
 
     def add_arg(self, arg):
         new = copy.deepcopy(self)
@@ -34,16 +34,16 @@ class OneShotCommand(Command):
                 universal_newlines=True,
                 cwd=self.directory)
         try:
-            config().get_logger().log(f"Running {process.args}", Level.DEBUG)
+            config().logger().log(f"Running {process.args}", Level.DEBUG)
             start = timeit.default_timer()
             process.wait(self.timeout)
             end = timeit.default_timer()
-            config().get_logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
+            config().logger().log(f"Took: {round(end-start, 5)}", Level.INFO)
         except subprocess.TimeoutExpired as err:
             process.kill()
             stdout = process.communicate()[0]
             if stdout != None:
-                config().get_logger().log(stdout, Level.FAIL)
+                config().logger().log(stdout, Level.FAIL)
             raise err
         return process.communicate()[0]
 
@@ -59,7 +59,7 @@ class LongRunningCommand(Command):
                 universal_newlines=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
-        config().get_logger().log(f"Running {process.args}", Level.DEBUG)
+        config().logger().log(f"Running {process.args}", Level.DEBUG)
         time.sleep(0.1) #TODO: parameterizable
 
         future = executor.submit(self.func)
@@ -70,12 +70,13 @@ class LongRunningCommand(Command):
         finally:
             process.terminate()
             process.wait()
-            config().get_logger().log(process.communicate()[1], Level.INFO)
+            config().logger().log(process.communicate()[1], Level.INFO)
 
         return str(result)
 
+# TODO: this probably shouldn't be here
 def get_pre(root):
-    return OneShotCommand(config().get_pre(), root)
+    return OneShotCommand(config().pre(), root)
 
 def get_post(root):
-    return OneShotCommand(config().get_post(), root)
+    return OneShotCommand(config().post(), root)

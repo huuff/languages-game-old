@@ -21,7 +21,7 @@ class Expectation():
         self.expected = to_string(expected)
 
     def check(self, input, actual):
-        logger = config().get_logger()
+        logger = config().logger()
         actual = sanitize(actual)
         try:
             assert self.expected == actual

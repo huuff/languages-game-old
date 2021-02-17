@@ -8,4 +8,3 @@
 * Implement some way of after each for key-value
 * Add unordered expectations (for regex_email)
 * Prevent running all tests if previous timed out
-* Compile haskell for sorting

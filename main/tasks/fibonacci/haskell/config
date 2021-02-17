@@ -1,2 +1,5 @@
 file = fib.hs
-run = runhaskell ${file}
+pre = ghc ${file} -o exe
+run = ./exe
+post = rm exe fib.hi fib.o
+timeout = 2500

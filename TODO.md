@@ -9,3 +9,4 @@
 * Add unordered expectations (for regex_email)
 * Prevent running all tests if previous timed out
 * Maybe prevent exploring files folder
+* Convert all relative imports to main.lib

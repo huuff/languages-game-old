@@ -13,10 +13,7 @@ def run_with_timeout(command):
 class TestCase:
     def __init__(self, input, expected):
         self.input = input
-        if isinstance(expected, list):
-            self.expected = ListExpectation(expected)
-        else:
-            self.expected = Expectation(expected)
+        self.expected = expected
 
 class SimpleTestCase(TestCase):
     def run(self, base_command, root):

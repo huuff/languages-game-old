@@ -15,7 +15,6 @@ def to_string(expected):
     else:
         return str(expected)
 
-
 class Expectation():
     def __init__(self, expected):
         self.expected = to_string(expected)
@@ -31,7 +30,6 @@ class Expectation():
             logger.log(f'Got: {actual}', Level.FAIL)
 
 class ListExpectation(Expectation):
-   
     def check(self, input, actual):
         if not isinstance(actual, list):
             actual = actual.split()

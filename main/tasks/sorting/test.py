@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from main.lib.expectation import ListExpectation
 import random
 import os
 from ...lib import command
@@ -10,7 +11,7 @@ randomCaseExpected.sort()
 
 def test_cases():
     return [
-        SimpleTestCase(list(range(10, 0, -1)), list(range(1, 11, 1))),
-        SimpleTestCase(list(randomCase), list(randomCaseExpected)),
+        SimpleTestCase(list(range(10, 0, -1)), ListExpectation(list(range(1, 11, 1)))),
+        SimpleTestCase(list(randomCase), ListExpectation(list(randomCaseExpected))),
             ]
 
